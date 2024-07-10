@@ -56,14 +56,15 @@ app.post('/rest', (req, res) => {
             console.log(result);
             
             // Incrementar el contador de mensajes
-            cont_mensajes++;
-
+            return Mensaje.countDocuments({});
+        })
+        .then(count => {
             // Notificar a través de WebSocket
-            notifyClients(`Se ingresó un registro mediante el sistema ${msj.Sistema} con el mensaje '${msj.Texto}'. Total de mensajes: ${cont_mensajes}`);
+            notifyClients(`Se ingresó un registro mediante el sistema ${msj.Sistema} con el mensaje '${msj.Texto}'. Total de mensajes: ${count}`);
 
             res.status(201).json({
                 message: "Handling POST requests to /rest",
-                createdProduct: result
+                createdProduct: msj
             });
         })
         .catch(err => {

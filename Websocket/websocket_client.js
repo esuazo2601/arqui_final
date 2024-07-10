@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
-const ws_rest = new WebSocket('ws://localhost:3000');
-const ws_grpc = new WebSocket('ws://localhost:3002');
-const ws_rabbit = new WebSocket('ws://localhost:3003');
+const ws_rest = new WebSocket('ws://rest_server:3000');
+const ws_grpc = new WebSocket('ws://grpc_server:3002');
+const ws_rabbit = new WebSocket('ws://rabbit_server:3003');
 
 ws_rest.on('open', () => {
   console.log('Conectado al servidor de WebSocket de REST');

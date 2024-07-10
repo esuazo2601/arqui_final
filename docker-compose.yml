@@ -61,8 +61,10 @@ services:
     networks:
       - redcita
     depends_on:
-      - mongo
-      - rabbitmq
+      mongo:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
     restart: always
     ports:
       - '3003:3003'
@@ -79,6 +81,21 @@ services:
     ports:
       - '3002:3002'
       - '50051:50051'
+
+  websocket_service:
+    build: 
+      context: ./Websocket
+      dockerfile: Dockerfile
+    networks:
+      - redcita
+    depends_on:
+      rest_server:
+        condition: service_started
+      rabbit_server:
+        condition: service_started
+      grpc_server:
+        condition: service_started
+    restart: always
 
 volumes:
   mongo-data:
