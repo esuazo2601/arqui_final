@@ -1,0 +1,75 @@
+services:  
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=arqui
+      - MONGO_INITDB_ROOT_PASSWORD=1221
+    ports:
+      - '27017:27017'
+    networks:
+      - redcita
+    volumes:
+      - ./mongo-data:/data/db
+    restart: always
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - '8081:8081'
+    networks:
+      - redcita
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=arqui
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=1221
+      - ME_CONFIG_MONGODB_URL=mongodb://arqui:1221@mongo:27017/
+      - ME_CONFIG_BASICAUTH=false
+    depends_on:
+      - mongo
+
+  rest_server:
+    build:
+      context: ./rest_server
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    networks:
+      - redcita
+    depends_on:
+      - mongo
+    volumes:
+      - ./rest_server:/app
+      - /app/node_modules
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - redcita
+    restart: always
+
+  rabbit_server:
+    build: 
+      context: ./RabbitMQ
+      dockerfile: Dockerfile
+    networks:
+      - redcita
+    depends_on:
+      - mongo
+      - rabbitmq
+    restart: always
+    ports:
+      - '3003:3003'
+
+volumes:
+  mongo-data:
+  rabbitmq_data:
+
+networks:
+  redcita:

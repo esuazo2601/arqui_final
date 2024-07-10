@@ -1,0 +1,23 @@
+syntax = "proto3";
+package gRPC;
+
+message Mensaje{
+  string Texto = 1;
+  string FechaHora = 2;
+  string Sistema = 3;
+  int32 Estado = 4;
+}
+
+service MensajeService {
+  rpc CrearMensaje(Mensaje) returns (MensajeResponse);
+  rpc ObtenerMensaje(ObtenerMensajeRequest) returns (Mensaje);
+}
+
+message ObtenerMensajeRequest {
+  string id = 1;
+}
+
+message MensajeResponse {
+  string id = 1;
+  string Mensaje = 2;
+}
