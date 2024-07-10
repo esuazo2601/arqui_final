@@ -66,6 +66,19 @@ services:
     restart: always
     ports:
       - '3003:3003'
+  
+  grpc_server:
+    build: 
+      context: ./gRPC
+      dockerfile: Dockerfile
+    networks:
+      - redcita
+    depends_on:
+      - mongo
+    restart: always
+    ports:
+      - '3002:3002'
+      - '50051:50051'
 
 volumes:
   mongo-data:

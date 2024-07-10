@@ -1,4 +1,3 @@
-// Dependencies
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
@@ -45,10 +44,10 @@ function obtenerMensaje(id) {
 }
 
 let grpc_msj = {
-  "Texto": 'Hola desde gRPC',
-  "FechaHora": new Date().toLocaleString(),
-  "Sistema": "gRPC",
-  "Estado": 0
+  Texto: 'Hola desde gRPC',
+  FechaHora: new Date().toLocaleString(),
+  Sistema: 'gRPC',
+  Estado: 0
 };
 
 // Example usage
